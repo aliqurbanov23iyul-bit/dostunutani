@@ -43,7 +43,46 @@ async function shareLink(url){if(navigator.share){try{await navigator.share({tit
 function role(n){return n===15?['Ruh əkizi','Şifrəni də bilirsən? Bir az qorxdum.']:n>=12?['Yaxın dost','Dostluq CV-n qəbul edildi. Maaş yoxdur.']:n>=9?['Güvənilən adam','Bir-iki detal qaçıb. Dostluq hələ ayaqdadır.']:n>=6?['Qrupdan tanış','Adımı bilirsən. Başlanğıc üçün pis deyil.']:n>=3?['Story izləyicisi','Story-lərimi izləmək təcrübə sayılmırmış.']:['Yanlış adama gəlmisən','Biz tanışıq? Yoxsa link səhv qrupa düşüb?'];}
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<38;i++){const el=document.createElement('i');el.className='confetti';el.style.cssText=`left:${Math.random()*100}%;background:${['#b38cd8','#efb7ce','#ecd279','#9dd0bd'][i%4]};animation-delay:${Math.random()*.5}s`;document.body.append(el);setTimeout(()=>el.remove(),3500);}}
 function rounded(ctx,x,y,w,h,r,fill){ctx.fillStyle=fill;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();}
-async function makeCard(r){await document.fonts.ready;const c=document.createElement('canvas');c.width=1080;c.height=1920;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,1080,1920);g.addColorStop(0,'#f6e8f5');g.addColorStop(1,'#e4e0f8');x.fillStyle=g;x.fillRect(0,0,1080,1920);for(let i=0;i<22;i++){x.fillStyle=i%2?'#d6bce8':'#eccd89';x.font='42px Nunito';x.fillText('✦',(i*173)%1050,80+(i*231)%1790);}rounded(x,90,230,900,1430,65,'#fffaff');x.textAlign='center';x.fillStyle='#986dcb';x.font='900 43px Nunito';x.fillText('dostunutanı',540,350);x.fillStyle='#7a6889';x.font='800 28px Nunito';x.fillText('DOSTLUQ RADARININ NƏTİCƏSİ',540,425);rounded(x,340,510,400,190,95,'#e7d8f6');x.fillStyle='#e7d8f6';x.beginPath();x.arc(470,520,100,0,7);x.arc(605,540,85,0,7);x.fill();x.fillStyle='#604b75';x.beginPath();x.arc(490,595,12,0,7);x.arc(590,595,12,0,7);x.fill();x.strokeStyle='#604b75';x.lineWidth=7;x.beginPath();x.arc(540,607,26,0,Math.PI);x.stroke();const [title,subtitle]=role(r.score);x.fillStyle='#513c63';x.font='900 58px Nunito';x.fillText(r.name.length>21?r.name.slice(0,20)+'…':r.name,540,825);x.font='700 32px Nunito';x.fillText((r.ownerName.length>22?r.ownerName.slice(0,21)+'…':r.ownerName)+' üçün nəticəm',540,884);x.font='1000 140px Nunito';x.fillStyle='#9e75cf';x.fillText(Math.round(r.score/15*100)+'%',540,1090);x.font='800 36px Nunito';x.fillStyle='#857391';x.fillText(r.score+' / 15 düzgün cavab',540,1150);rounded(x,180,1215,720,105,35,'#fff0bd');x.fillStyle='#654c75';x.font='900 44px Nunito';x.fillText(title,540,1285);x.font='700 28px Nunito';const words=subtitle.split(' ');let lines=[''];for(const word of words){const i=lines.length-1;if(x.measureText(lines[i]+word).width>730)lines.push(word+' ');else lines[i]+=word+' ';}lines.forEach((l,i)=>x.fillText(l.trim(),540,1400+i*42));x.fillStyle='#ab96bb';x.font='700 25px Nunito';x.fillText('Bu nəticə zarafatdır. Dostluq imtahan deyil.',540,1575);x.fillStyle='#775e8e';x.font='900 34px Nunito';x.fillText('Sən də öz testini yarat ✦',540,1785);x.font='700 22px Nunito';x.fillText('Qurucu: Əli Qurbanov · @ok4nnerr',540,1840);cardBlob=await new Promise(resolve=>c.toBlob(resolve,'image/png'));return c.toDataURL('image/png');}
+async function makeCard(r) {
+ await document.fonts.ready;
+ const c=document.createElement('canvas'); c.width=1080; c.height=1920;
+ const x=c.getContext('2d');
+ const ink='#493758',purple='#9366cf',muted='#8b7d98';
+ x.fillStyle='#f2ecfa'; x.fillRect(0,0,1080,1920);
+ // A quiet background and one clean card; all text stays dynamic.
+ x.fillStyle='#e8def4'; x.beginPath(); x.arc(1010,100,230,0,Math.PI*2); x.fill();
+ x.fillStyle='#f8e8ee'; x.beginPath(); x.arc(40,1800,190,0,Math.PI*2); x.fill();
+ x.save(); x.shadowColor='#72528b18'; x.shadowBlur=45; x.shadowOffsetY=20;
+ rounded(x,100,270,880,1380,56,'#fffdfF'); x.restore();
+ x.textAlign='center';
+ const text=(s,y,size,weight=800,color=ink,width=720)=>{
+   let f=size; x.font=weight+' '+f+'px Nunito, sans-serif';
+   while(x.measureText(s).width>width&&f>22){f--;x.font=weight+' '+f+'px Nunito, sans-serif';}
+   x.fillStyle=color; x.fillText(s,540,y);
+ };
+ text('dostunutanı',395,42,900,purple);
+ text('DOSTLUQ TESTİ',462,25,800,muted);
+ // Initials are decorative; the full names below identify both people.
+ const person=(name,cx,fill)=>{
+   x.fillStyle=fill;x.beginPath();x.arc(cx,625,67,0,Math.PI*2);x.fill();
+   x.fillStyle=purple;x.font='900 47px Nunito, sans-serif';
+   x.fillText(Array.from(name.trim())[0]?.toLocaleUpperCase('az')||'?',cx,642);
+ };
+ person(r.name,450,'#eee3fa');person(r.ownerName,630,'#f8e4ed');
+ x.fillStyle='#c5afd9';x.font='30px Nunito, sans-serif';x.fillText('×',540,637);
+ text(r.name,780,66,900);
+ text(r.ownerName+' üçün test nəticəsi',837,32,700,muted);
+ text(Math.round(r.score/15*100)+'%',1080,185,1000,purple);
+ text(r.score+' / 15 düzgün cavab',1152,36,800,muted);
+ rounded(x,250,1220,580,85,28,'#e9f3ec');
+ text(role(r.score)[0],1278,36,900,'#537b65',520);
+ text(r.score>=12?'Yaxşı tanıyırsan. Dostluq yerindədir.':r.score>=6?'Bir az da söhbət etmək lazımdır.':'Dostla bir kofe içmək vaxtıdır.',1395,29,700,muted);
+ x.strokeStyle='#eee6f4';x.lineWidth=2;x.beginPath();x.moveTo(215,1470);x.lineTo(865,1470);x.stroke();
+ text('Sən də öz testini yarat',1545,27,800,purple);
+ text('Qurucu: Əli Qurbanov · @ok4nnerr',1750,24,700,muted);
+ cardBlob=await new Promise(resolve=>c.toBlob(resolve,'image/png'));
+ return c.toDataURL('image/png');
+}
 function downloadCard(){if(!cardBlob)return;const a=document.createElement('a');a.href=URL.createObjectURL(cardBlob);a.download='dostluq-neticesi.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
 async function result(r,quizId){lastResult=r;cardBlob=null;const [title,subtitle]=role(r.score);frame(`<div class="result"><span class="eyebrow">✦ Hökm verildi. Etiraz qəbul olunur.</span><h2>${esc(r.name)}, nəticə gəldi!</h2><p class="sub">${esc(r.ownerName)} üçün dostluq radarın</p><div class="score-ring" style="--score:${r.score/15*100}%"><div><strong>${Math.round(r.score/15*100)}%</strong><small>${r.score} / 15 düzgün cavab</small></div></div><span class="role">${title}</span><p>${subtitle}</p><img id="card" class="share-card" alt="Sənin paylaşılacaq nəticə kartın"><div class="sharebuttons"><button id="download" aria-label="Nəticə şəklini endir">${icon('download')}</button><button id="sharefile" aria-label="Nəticə şəklini paylaş">${icon('share')}</button><button id="wa" aria-label="WhatsApp ilə nəticəni paylaş">${icon('whatsapp')}</button><button id="ig" aria-label="Instagram üçün şəkil">${icon('instagram')}</button><button id="tt" aria-label="TikTok üçün şəkil">${icon('tiktok')}</button></div><p class="micro">Story üçün 1080 × 1920 şəkil. Instagram/TikTok-a endirib yükləyə bilərsən.</p><div class="actions"><button id="own" class="btn">İndi mənim testimi həll etsinlər →</button><button id="home" class="btn secondary">Ana səhifə</button></div></div>`);$('#own').onclick=()=>{history.replaceState(null,'',location.pathname);start('create');};$('#home').onclick=home;$('#download').onclick=downloadCard;$('#ig').onclick=$('#tt').onclick=()=>{downloadCard();toast('Şəkli story-yə yüklə, test linkini də əlavə et.');};$('#wa').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent(`${r.ownerName} üçün ${r.score}/15 topladım — ${title}! Sən də yoxla: ${quizLink(quizId)}`),'_blank','noopener');$('#sharefile').onclick=async()=>{if(!cardBlob){toast('Şəkil hazırlanır…');return;}const file=new File([cardBlob],'dostluq-neticesi.png',{type:'image/png'});if(navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:'Dostluq nəticəm'});}catch(e){if(e.name!=='AbortError')downloadCard();}}else{downloadCard();toast('Şəkil endirildi. İstədiyin tətbiqdə paylaş.');}};$('#card').src=await makeCard(r);confetti();}
 function owned(){adminMode=false;const list=read('dt_owned',[]);frame(`<span class="eyebrow">✦ Şəxsi guşən</span><h2>Mənim testlərim</h2><p class="sub">Bu cihazda yaratdığın testlər. Başqa cihazda şəxsi panel linkini aç.</p>${list.length?'<div class="table-wrap"><table><thead><tr><th>Test</th><th>Panel</th></tr></thead><tbody>'+list.map(q=>`<tr><td>${esc(q.name)}<small>${esc(q.id.slice(0,8))}</small></td><td><button data-owned="${esc(q.id)}">Nəticələr →</button></td></tr>`).join('')+'</tbody></table></div>':'<div class="empty">Hələ test yaratmamısan. İlk addımı sən at ✦</div>'}<div class="actions"><a class="btn" href="index.html">Yeni test yarat →</a></div>`);document.querySelectorAll('[data-owned]').forEach(b=>b.onclick=()=>{const q=list.find(x=>x.id===b.dataset.owned);activeToken=q.token;manage(q.id);});}
