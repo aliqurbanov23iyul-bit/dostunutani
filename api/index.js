@@ -32,7 +32,7 @@ export function createHandler(getDatabase=db,fetcher=fetch){return async functio
  }
  if(path==='/admin/ai'&&method==='GET'){
  const settings=await aiSettings(d);const usage=await d.query("SELECT hits FROM rate_limits WHERE key=$1 AND expires_at>now()",['ai:global']);
- return send(200,{...settings,keyConfigured:!!process.env.GEMINI_API_KEY,model:process.env.GEMINI_MODEL||'gemini-3.5-flash-lite',used:usage.rows[0]?.hits||0});
+ return send(200,{...settings,keyConfigured:!!process.env.GEMINI_API_KEY,model:process.env.GEMINI_MODEL||'Avtomatik (mövcud Flash modeli)',used:usage.rows[0]?.hits||0});
  }
  if(path==='/admin/ai'&&method==='POST'){
  if(typeof body.enabled!=='boolean'||!Number.isInteger(body.perIp)||body.perIp<1||body.perIp>10||!Number.isInteger(body.daily)||body.daily<1||body.daily>500)return send(400,{error:'Limitlər düzgün deyil: IP üçün 1–10, sayt üçün 1–500.'});
@@ -79,4 +79,5 @@ export function createHandler(getDatabase=db,fetcher=fetch){return async functio
 };
 }
 export default createHandler();
+
 

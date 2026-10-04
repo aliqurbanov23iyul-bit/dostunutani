@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHandler} from '../api/index.js';
-import {cleanQuestions,generateQuestions,hash,signSession} from '../api/core.js';
+import {cleanQuestions,generateQuestions,hash,signSession,selectGeminiModel} from '../api/core.js';
 const questions=prefix=>Array.from({length:15},(_,i)=>({text:`${prefix} sual ${i+1}?`,options:['Bir','İki','Üç','Dörd']}));
 function fixture(){
  const quizzes=new Map(),attempts=new Map(),limits=new Map();let settings={enabled:true,perIp:3,daily:50},calls=0;
@@ -20,7 +20,7 @@ function fixture(){
   if(sql.startsWith('DELETE FROM quizzes')){quizzes.delete(args[0]);return {rows:[]};}
   throw Error('Unexpected query '+sql);
  }};
- const handler=createHandler(async()=>database,async(url,options)=>{calls++;assert.equal(options.headers['x-goog-api-key'],'test-key');assert.ok(options.signal);assert.ok(JSON.parse(options.body).generationConfig.responseFormat.text.schema);return {ok:true,json:async()=>({candidates:[{finishReason:'STOP',content:{parts:[{text:JSON.stringify({questions:questions('AI')})}]}}]})};});
+ const handler=createHandler(async()=>database,async(url,options)=>{if(url.includes('?pageSize='))return {ok:true,json:async()=>({models:[{name:'models/gemini-2.5-flash-lite',supportedGenerationMethods:['generateContent']}]})};calls++;assert.equal(options.headers['x-goog-api-key'],'test-key');assert.ok(options.signal);assert.ok(JSON.parse(options.body).generationConfig.responseSchema);return {ok:true,json:async()=>({candidates:[{finishReason:'STOP',content:{parts:[{text:JSON.stringify({questions:questions('AI')})}]}}]})};});
  async function call(path,method='GET',body,token='',cookie=''){
   let result;await handler({url:'/api'+path,method,body,headers:{host:'site.test',...(token?{authorization:'Bearer '+token}:{}),cookie},socket:{remoteAddress:'127.0.0.1'}},{setHeader(){},statusCode:0,end(s){result={status:this.statusCode,data:JSON.parse(s)};}});return result;
  }
@@ -64,8 +64,16 @@ test('only admin may change AI settings; disabled and global cap prevent upstrea
  }finally{restore();}
 });
 test('provider errors and incomplete JSON produce safe errors without credentials',async()=>{
- const restore=env();try{
+ const restore=env();const oldModel=process.env.GEMINI_MODEL;process.env.GEMINI_MODEL='gemini-2.5-flash-lite';try{
  await assert.rejects(()=>generateQuestions('about','fun',async()=>({ok:false,status:403})),e=>e.status===502&&!e.message.includes('test-key'));
  await assert.rejects(()=>generateQuestions('about','fun',async()=>({ok:true,json:async()=>({candidates:[{finishReason:'STOP',content:{parts:[{text:'broken'}]}}]})})),e=>e.status===502);
- }finally{restore();}
+ }finally{if(oldModel===undefined)delete process.env.GEMINI_MODEL;else process.env.GEMINI_MODEL=oldModel;restore();}
+});
+
+
+test('automatic model selection uses only listed text-generation models',async()=>{
+ const old=process.env.GEMINI_MODEL;delete process.env.GEMINI_MODEL;try{
+ const model=await selectGeminiModel(async()=>({ok:true,json:async()=>({models:[{name:'models/gemini-2.5-flash-image',supportedGenerationMethods:['generateContent']},{name:'models/gemini-2.5-flash-lite',supportedGenerationMethods:['generateContent']}]})}));assert.equal(model,'gemini-2.5-flash-lite');
+ await assert.rejects(()=>selectGeminiModel(async()=>({ok:true,json:async()=>({models:[]})})),e=>e.status===503);
+ }finally{if(old===undefined)delete process.env.GEMINI_MODEL;else process.env.GEMINI_MODEL=old;}
 });

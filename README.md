@@ -84,12 +84,12 @@ Tutum iştirakçıların sayı, adların uzunluğu və indekslərdən asılıdı
 - db/schema.sql — cədvəllər və indekslər
 - server.js — yerli Node server; Vercel api/index.js işlədilir
 
-`npm test` dependency olmadan 17 məntiq/təhlükəsizlik yoxlamasını işlədir. Canlı Neon inteqrasiyası env olmadan yoxlanmır. Dizaynda onlayn Nunito şrifti yüklənməsə sistem şrifti işləyir. Başqa üçüncü tərəf UI kitabxanası yoxdur.
+`npm test` dependency olmadan 18 məntiq/təhlükəsizlik yoxlamasını işlədir. Canlı Neon inteqrasiyası env olmadan yoxlanmır. Dizaynda onlayn Nunito şrifti yüklənməsə sistem şrifti işləyir. Başqa üçüncü tərəf UI kitabxanası yoxdur.
 
 
 ## Gemini ilə şəxsi test
 
-Vercel-də `GEMINI_API_KEY` əlavə et. İstəyə görə `GEMINI_MODEL` ver; default `gemini-3.5-flash-lite`-dır. Açar yalnız serverdə işlənir və API cavablarında göstərilmir. Modelin mövcudluğu və pulsuz kvota Google layihəsinin ayarlarından asılıdır. Model dəyişənini dəyişəndə redeploy et.
+Vercel-də `GEMINI_API_KEY` əlavə et. İstəyə görə `GEMINI_MODEL` ver; verilmədikdə model Gemini models.list siyahısından avtomatik seçilir. Açar yalnız serverdə işlənir və API cavablarında göstərilmir. Modelin mövcudluğu və pulsuz kvota Google layihəsinin ayarlarından asılıdır. Model dəyişənini dəyişəndə redeploy et.
 
 Mövcud Neon database üçün bu SQL-i bir dəfə işlət (təkrar icra da təhlükəsizdir):
 
@@ -106,3 +106,6 @@ Admin → `AI idarəsi`: funksiyanı aç/bağla, IP üzrə gündəlik limiti (1�
 SQL yeniləməsi edilməyən sistemdə AI seçimi bağlı görünür, klassik testlər işləyir. Demo rejimində Gemini istifadə edilmir. Google 429, yanlış açar/model, gecikmə və natamam cavab halları istifadəçiyə uyğun mesajla göstərilir. Avtomatik ödənişli retry yoxdur. API maksimum 25 saniyə gözləyir, Vercel funksiyası üçün 30 saniyə ayrılıb.
 
 `npm test` AI JSON validasiyası, ayrı yaradıcıların sual/nəticə icazələri, IP/ümumi limitlər, admin ayar icazəsi və provider xətalarını mock vasitəsilə yoxlayır. Canlı Gemini və Neon çağırışları testlərdə edilməyib.
+
+
+Gemini uyğunluğu: generateContent üçün `responseMimeType` + `responseSchema` istifadə edilir. Model və açar xətaları ayrı göstərilir. Köhnə və ya əlçatan olmayan `GEMINI_MODEL` varsa sil və redeploy et; avtomatik seçim aktivləşir.
