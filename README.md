@@ -4,7 +4,7 @@ HTML + CSS + vanilla JavaScript frontend, Node.js API, Neon PostgreSQL. Telefon 
 
 ## İçində nə var?
 
-- Hamı üçün eyni 15 sual, hər birində 4 variant.
+- Klassik 15 sual və ya Gemini ilə fərdi 15 sual; hərəsində 4 variant.
 - Adını və öz cavablarını seçib test yaratmaq; təsadüfi, daimi paylaşım linki.
 - Dostun adını daxil edib testi həll etməsi; xal serverdə hesablanır.
 - Altı zarafatlı nəticə rolu; 1080 × 1920 PNG story kartı.
@@ -84,4 +84,25 @@ Tutum iştirakçıların sayı, adların uzunluğu və indekslərdən asılıdı
 - db/schema.sql — cədvəllər və indekslər
 - server.js — yerli Node server; Vercel api/index.js işlədilir
 
-`npm test` dependency olmadan 12 məntiq/təhlükəsizlik yoxlamasını işlədir. Canlı Neon inteqrasiyası env olmadan yoxlanmır. Dizaynda onlayn Nunito şrifti yüklənməsə sistem şrifti işləyir. Başqa üçüncü tərəf UI kitabxanası yoxdur.
+`npm test` dependency olmadan 17 məntiq/təhlükəsizlik yoxlamasını işlədir. Canlı Neon inteqrasiyası env olmadan yoxlanmır. Dizaynda onlayn Nunito şrifti yüklənməsə sistem şrifti işləyir. Başqa üçüncü tərəf UI kitabxanası yoxdur.
+
+
+## Gemini ilə şəxsi test
+
+Vercel-də `GEMINI_API_KEY` əlavə et. İstəyə görə `GEMINI_MODEL` ver; default `gemini-3.5-flash-lite`-dır. Açar yalnız serverdə işlənir və API cavablarında göstərilmir. Modelin mövcudluğu və pulsuz kvota Google layihəsinin ayarlarından asılıdır. Model dəyişənini dəyişəndə redeploy et.
+
+Mövcud Neon database üçün bu SQL-i bir dəfə işlət (təkrar icra da təhlükəsizdir):
+
+```sql
+ALTER TABLE quizzes ADD COLUMN IF NOT EXISTS questions jsonb;
+ALTER TABLE quizzes ADD COLUMN IF NOT EXISTS source text NOT NULL DEFAULT 'classic';
+CREATE TABLE IF NOT EXISTS app_settings (key text PRIMARY KEY, value jsonb NOT NULL);
+```
+
+`Test yarat` → ad → `AI ilə hazırla` → 20–1000 simvol məlumat və üslub → 15 sualı redaktə et → düzgün cavablarını özün seç → paylaş. Şəxsi məlumat sual hazırlamaq üçün Gemini-yə göndərilir; ilkin məlumat database-də saxlanmır. Testin sualları onun `quizzes` sətrində saxlanır və açıq linkdə cavab açarı olmadan göstərilir. Nəticə detalları həmin testin suallarını istifadə edir. Köhnə klassik testlər əvvəlki bankla işləyir.
+
+Admin → `AI idarəsi`: funksiyanı aç/bağla, IP üzrə gündəlik limiti (1–10), sayt üzrə gündəlik limiti (1–500) dəyiş. Default 3/IP, 50/sayt. Sayğaclar Bakı vaxtı gecə 00:00-da yenilənir. Hər qəbul olunan generasiya cəhdi (provider xətası daxil) limitə sayılır. Limit database-də atomik rezervasiya ilə tətbiq edilir; Vercel instansiyaları eyni sayğacı paylaşır. Şəbəkə IP-si hash kimi saxlanır. VPN və başqa şəbəkə IP limitini keçə bilər; saytın ümumi limiti əlavə xərc sərhədidir. Bu limit Google billing büdcəsini əvəz etmir.
+
+SQL yeniləməsi edilməyən sistemdə AI seçimi bağlı görünür, klassik testlər işləyir. Demo rejimində Gemini istifadə edilmir. Google 429, yanlış açar/model, gecikmə və natamam cavab halları istifadəçiyə uyğun mesajla göstərilir. Avtomatik ödənişli retry yoxdur. API maksimum 25 saniyə gözləyir, Vercel funksiyası üçün 30 saniyə ayrılıb.
+
+`npm test` AI JSON validasiyası, ayrı yaradıcıların sual/nəticə icazələri, IP/ümumi limitlər, admin ayar icazəsi və provider xətalarını mock vasitəsilə yoxlayır. Canlı Gemini və Neon çağırışları testlərdə edilməyib.

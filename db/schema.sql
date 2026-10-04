@@ -12,3 +12,9 @@ CREATE TABLE IF NOT EXISTS attempts (
 CREATE INDEX IF NOT EXISTS attempts_quiz_date ON attempts(quiz_id,created_at DESC);
 CREATE INDEX IF NOT EXISTS quizzes_date ON quizzes(created_at DESC);
 CREATE TABLE IF NOT EXISTS rate_limits (key text PRIMARY KEY, hits integer NOT NULL, expires_at timestamptz NOT NULL);
+
+
+-- AI migration: safe to run again; existing tests are preserved.
+ALTER TABLE quizzes ADD COLUMN IF NOT EXISTS questions jsonb;
+ALTER TABLE quizzes ADD COLUMN IF NOT EXISTS source text NOT NULL DEFAULT 'classic';
+CREATE TABLE IF NOT EXISTS app_settings (key text PRIMARY KEY, value jsonb NOT NULL);
