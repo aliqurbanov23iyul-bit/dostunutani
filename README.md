@@ -84,7 +84,7 @@ Tutum iştirakçıların sayı, adların uzunluğu və indekslərdən asılıdı
 - db/schema.sql — cədvəllər və indekslər
 - server.js — yerli Node server; Vercel api/index.js işlədilir
 
-`npm test` dependency olmadan 18 məntiq/təhlükəsizlik yoxlamasını işlədir. Canlı Neon inteqrasiyası env olmadan yoxlanmır. Dizaynda onlayn Nunito şrifti yüklənməsə sistem şrifti işləyir. Başqa üçüncü tərəf UI kitabxanası yoxdur.
+`npm test` dependency olmadan 21 məntiq/təhlükəsizlik yoxlamasını işlədir. Canlı Neon inteqrasiyası env olmadan yoxlanmır. Dizaynda onlayn Nunito şrifti yüklənməsə sistem şrifti işləyir. Başqa üçüncü tərəf UI kitabxanası yoxdur.
 
 
 ## Gemini ilə şəxsi test
@@ -109,3 +109,11 @@ SQL yeniləməsi edilməyən sistemdə AI seçimi bağlı görünür, klassik te
 
 
 Gemini uyğunluğu: generateContent üçün `responseMimeType` + `responseSchema` istifadə edilir. Model və açar xətaları ayrı göstərilir. Köhnə və ya əlçatan olmayan `GEMINI_MODEL` varsa sil və redeploy et; avtomatik seçim aktivləşir.
+
+## Testə dəvət kartı
+Test yaradılandan sonra brauzerdə 1080×1920 PNG dəvət kartı hazırlanır: sahibin adı, “nə qədər tanıyırsan?”, 15 sual / 4 variant və açıq test linkinin QR kodu. Şəxsi panel açarı şəkilə, QR koda və paylaşım mətninə daxil edilmir. Əvvəlki testlər üçün şəxsi paneldə “Dəvət kartı” düyməsi var.
+
+WhatsApp və ümumi paylaşım düymələri Web Share API ilə şəkil faylı və link olan mətn verir. Telefonun paylaşım menyusunda WhatsApp seçilir; alıcı seçimi və göndərmə istifadəçidə qalır. Hədəf tətbiq mətni ayrıca qəbul edə və ya buraxa bilər. Desktop / dəstək olmayan brauzerdə şəkil endirmək, açıqlamanı kopyalamaq və WhatsApp-da mətn/link açmaq seçimləri göstərilir. Instagram/TikTok düymələri şəkli endirir və linki kopyalayır; story-yə link stikeri istifadəçi tərəfindən əlavə edilir.
+
+QR kod lokal `public/vendor/qrcode.mjs` (Kazuhiko Arase, MIT; lisenziya yanında saxlanır) ilə yaradılır, xarici QR xidməti istifadə edilmir. Dəvət kartının vəziyyəti nəticə kartından və digər testlərin kartlarından ayrıdır. Şəkillər database storage tutmur.
+
