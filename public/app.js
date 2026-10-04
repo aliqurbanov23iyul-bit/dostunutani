@@ -1,8 +1,14 @@
 import {QUESTIONS} from './questions.js';
 const $=s=>document.querySelector(s),app=$('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const icons={instagram:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/>',tiktok:'<path d="M14 3v12a4 4 0 1 1-4-4M14 3c0 4 3 6 6 6"/>',whatsapp:'<path d="M20 12a8 8 0 0 1-12 7l-5 2 1-5a8 8 0 1 1 16-4Z"/><path d="M8 8c0 5 3 7 7 8l2-2-3-2-1 1-3-3 1-1-2-2Z"/>',download:'<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>',share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m9 11 6-4m-6 6 6 4"/>'};
-const icon=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[n]||icons.share}</svg>`;
+const icons = {
+ instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.25"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>',
+ tiktok: '<path fill="currentColor" stroke="none" d="M16.6 2h-3.4v13.1a3.1 3.1 0 1 1-2.7-3.1V8.6a6.5 6.5 0 1 0 6.1 6.5V8.5a8.2 8.2 0 0 0 5 1.7V6.8c-2.8 0-5-2.1-5-4.8Z"/>',
+ whatsapp: '<path d="M20.5 11.7a8.5 8.5 0 0 1-12.7 7.4L3 20.5l1.4-4.6a8.5 8.5 0 1 1 16.1-4.2Z"/><path fill="currentColor" stroke="none" d="M8.1 7.5c.2-.3.4-.4.7-.4h.5c.2 0 .3.1.4.4l.8 1.8c.1.2.1.4-.1.6l-.6.7c-.1.1-.1.3 0 .5.6 1.1 1.5 2 2.7 2.5.2.1.4.1.5-.1l.8-1c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.4.4 0 .4-.2 1.3-.8 1.7-.5.4-1.2.5-1.9.3-1.1-.3-2.5-.9-3.8-2.1-1.3-1.2-2.3-2.7-2.7-3.8-.4-1.1.1-1.9.7-2.3Z"/>',
+ download: '<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>',
+ share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.4 6.6-3.8m-6.6 7 6.6 3.8"/>'
+};
+const icon = n => `<svg class="social-icon social-icon--${n}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${icons[n] || icons.share}</svg>`;
 document.querySelectorAll('[data-icon]').forEach(el=>el.innerHTML=icon(el.dataset.icon));
 let timer;function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');clearTimeout(timer);timer=setTimeout(()=>$('#toast').classList.remove('show'),3000);}
 $('#close-modal').onclick=()=>$('#modal').close();$('#modal').onclick=e=>{if(e.target===$('#modal'))$('#modal').close();};
