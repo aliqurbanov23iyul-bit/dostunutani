@@ -1,0 +1,212 @@
+<!doctype html><html lang="az"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f4efff"><meta name="description" content="15 sual, bir dostluq testi. Testini yarat, dostlarına göndər, səni kim yaxşı tanıyır gör."><title>Dostunu Tanı — dostluğun balı neçədir?</title><link rel="icon" href="icon.svg"><link rel="stylesheet" href="style.css"></head><body><div class="ambient" aria-hidden="true"><i>✦</i><i>✧</i><i>✦</i><i>♡</i><i>✧</i></div><header><a class="brand" href="/"> <span class="brand-icon">✦</span> dostunu<span>tanı</span><small>bir az test, bir az qeybət</small></a><nav><a href="panel.html">Mənim testlərim <span>↗</span></a></nav></header><main id="app" aria-live="polite"></main><footer class="footer-new">
+  <div class="footer-inner">
+    <div class="footer-contact-tag"><span>✦ izlə</span></div>
+    <div class="footer-brand-wrap">
+      <a class="footer-brand" href="/">dostunutanı</a>
+    </div>
+    <h2 class="footer-headline">Saytın qurucusunu<br><em class="footer-em">izlə & dəstəklə ✨</em></h2>
+    <p class="footer-sub">Yeni testlər, fikirlər və əyləncəli məzmun üçün sosial medianı izlə.</p>
+    <div class="footer-btns">
+      <a href="https://www.instagram.com/ok4nnerr/" target="_blank" rel="noopener" aria-label="Instagram" class="footer-btn footer-btn-ig" id="footer-ig-btn">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+        </svg>
+        Instagram ↗
+      </a>
+      <a href="https://www.tiktok.com/@ok4nnerr" target="_blank" rel="noopener" aria-label="TikTok" class="footer-btn footer-btn-tt" id="footer-tt-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.22 8.22 0 004.82 1.55V6.79a4.85 4.85 0 01-1.05-.1z"/>
+        </svg>
+        TikTok ↗
+      </a>
+    </div>
+    <div class="footer-founder">
+      <span>☕ Sevgi ilə hazırlandı</span>
+      <strong>Qurucu: Əli Qurbanov</strong>
+    </div>
+    <small class="footer-legal">Bu, əyləncə testidir. Nəticə dostluğunuzu müəyyən etmir.<br>Adın və cavabların test sahibinə görünəcək. Şəxsi məlumat yazma.</small>
+  </div>
+</footer>
+<style>
+/* ── NEW FOOTER ─────────────────────────────── */
+footer.footer-new {
+  border-top: none;
+  background: #fff8fc;
+  padding: 0;
+  display: block;
+  margin: 0;
+  max-width: 100%;
+}
+.footer-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 64px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+.footer-contact-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #e2c9ee;
+  border-radius: 50px;
+  padding: 6px 20px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #a07ac4;
+  text-transform: lowercase;
+  margin-bottom: 28px;
+  background: #fff;
+}
+.footer-brand-wrap { margin-bottom: 14px; }
+.footer-brand {
+  font-family: Nunito, ui-rounded, system-ui, sans-serif;
+  font-size: 36px;
+  font-weight: 1000;
+  letter-spacing: -1.5px;
+  color: #3d2b55;
+  background: none;
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1;
+}
+.footer-headline {
+  font-family: Nunito, ui-rounded, system-ui, sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 1000;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  color: #3d2b55;
+  margin: 0 0 14px;
+}
+.footer-em {
+  font-style: normal;
+  background: linear-gradient(90deg, #e8549c 0%, #e96eb0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.footer-sub {
+  font-size: 13px;
+  color: #a48db7;
+  margin: 0 0 32px;
+  line-height: 1.7;
+}
+.footer-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 36px;
+}
+.footer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: 50px;
+  font-family: Nunito, ui-rounded, system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 15px;
+  text-decoration: none;
+  border: 2px solid transparent;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+  transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s;
+  cursor: pointer;
+  position: relative;
+}
+.footer-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.footer-btn:hover {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.13);
+}
+.footer-btn:active {
+  transform: translateY(2px) scale(0.97);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.footer-btn-ig {
+  background: linear-gradient(45deg, #f58529 0%, #dd2a7b 50%, #8134af 100%);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 24px rgba(221,42,123,0.30);
+}
+.footer-btn-ig:hover {
+  box-shadow: 0 12px 32px rgba(221,42,123,0.40);
+}
+.footer-btn-tt {
+  background: #fff;
+  color: #1a1a2e;
+  border: 2px solid #ccc0dd;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+}
+.footer-btn-tt:hover {
+  background: #fdf9ff;
+  border-color: #b8a8d0;
+}
+.footer-founder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #a48db7;
+  margin-bottom: 22px;
+  line-height: 1.7;
+}
+.footer-founder strong {
+  color: #7354a0;
+  font-weight: 900;
+  font-size: 13px;
+}
+.footer-legal {
+  color: #bbaecb;
+  font-size: 10px;
+  line-height: 1.7;
+  text-align: center;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .footer-inner { padding: 48px 20px 32px; }
+  .footer-brand { font-size: 28px; }
+  .footer-headline { font-size: 30px; letter-spacing: -1px; }
+  .footer-btn { font-size: 13px; padding: 12px 20px; }
+  .footer-btns { gap: 10px; }
+}
+
+/* jump animation on click */
+@keyframes footer-btn-jump {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(0.93) translateY(3px); }
+  65%  { transform: scale(1.08) translateY(-6px); }
+  85%  { transform: scale(0.97) translateY(1px); }
+  100% { transform: scale(1); }
+}
+.footer-btn.jumping {
+  animation: footer-btn-jump 0.42s cubic-bezier(.36,.07,.19,.97);
+}
+</style>
+<script>
+(function(){
+  document.querySelectorAll('.footer-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.classList.remove('jumping');
+      void btn.offsetWidth;
+      btn.classList.add('jumping');
+      btn.addEventListener('animationend', function(){
+        btn.classList.remove('jumping');
+      }, { once: true });
+    });
+  });
+})();
+</script><div id="toast" role="status"></div><dialog id="modal"><button id="close-modal" class="close" aria-label="Bağla">×</button><div id="modal-body"></div></dialog><script type="module" src="app.js"></script></body></html>
